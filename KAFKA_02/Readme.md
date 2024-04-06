@@ -5,6 +5,16 @@
 ```sh
 cd KAFKA_02
 ```
+## DOWNLOAD KAFKA
+```sh
+curl https://downloads.apache.org/kafka/3.7.0/kafka_2.13-3.7.0.tgz -o kafka.tgz
+```
+
+## UNPACKED KAFKA
+```sh
+tar -xvzf kafka.tgz --strip 1
+```
+
 ## START KAFKA ZOOKEEPER
 ```sh
 bin/zookeeper-server-start.sh config/zookeeper.properties
