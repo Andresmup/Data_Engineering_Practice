@@ -1,51 +1,119 @@
 # STEPS
 
-## ACCESS KAFKA_02 FOLDER
+## BASIC RUN
 
+### ACCESS KAFKA_02 FOLDER
 ```sh
 cd KAFKA_02
 ```
-## DOWNLOAD KAFKA
+### DOWNLOAD KAFKA
 ```sh
 curl https://downloads.apache.org/kafka/3.7.0/kafka_2.13-3.7.0.tgz -o kafka.tgz
 ```
 
-## UNPACKED KAFKA
+### UNPACKED KAFKA
 ```sh
 tar -xvzf kafka.tgz --strip 1
 ```
 
-## START KAFKA ZOOKEEPER
+### START KAFKA ZOOKEEPER
 ```sh
 bin/zookeeper-server-start.sh config/zookeeper.properties
 ```
 
-## START KAFKA SERVER
+### START KAFKA SERVER
 ```sh
 bin/kafka-server-start.sh config/server.properties
 ```
 
-## CREATE TOPIC
+### CREATE TOPIC
 ```sh
 bin/kafka-topics.sh --create --boostrap-server localhost:9092 --topics cities
 ```
 
-## LIST AVAILABLE TOPICS
+### LIST AVAILABLE TOPICS
 ```sh
 bin/kafka-topics.sh --list --boostrap-server localhost:9092
 ```
 
-## ACCESS INFORMATION ABOUT A TOPIC
+### ACCESS INFORMATION ABOUT A TOPIC
 ```sh
 bin/kafka-topics.sh --describe --boostrap-server localhost:9092 --topics cities
 ```
 
-## PRODUCE CONSOLE MESSAGES
+### PRODUCE CONSOLE MESSAGES
 ```sh
 bin/kafka-console-producer.sh --bootstrap-server localhost:9092 --topic cities
 ```
 
-## CONSUME CONSOLE MESSAGES
+### CONSUME CONSOLE MESSAGES
 ```sh
 bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic cities
+```
+
+## MULTIPLE PARTITION RUN
+
+### START ZOOKEEPER
+```sh
+bin/zookeeper-server-start.sh config/zookeeper.properties
+```
+
+### START KAFKA BROKER
+```sh
+bin/kafka-server-start.sh config/server.properties
+```
+
+### CREATE TOPIC
+```sh
+bin/kafka-topics.sh --bootstrap-server localhost:9092 --create --replication-factor 1 --partitions 3 --topic names
+```
+
+### LIST TOPICS
+```sh
+bin/kafka-topics.sh --bootstrap-server localhost:9092 --list
+```
+
+### TOPIC DETAILS
+```sh
+bin/kafka-topics.sh --bootstrap-server localhost:9092 --describe --topic names
+```
+
+### START CONSOLE PRODUCER
+```sh
+bin/kafka-console-producer.sh --broker-list localhost:9092 --topic names
+```
+
+### START CONSOLE CONSUMER
+```sh
+bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic test
+```
+
+### START CONSOLE CONSUMER AND READ MESSAGES FROM BEGINNING
+```sh
+bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic animals --from-beginning
+```
+
+### START CONSOLE CONSUMER AND READ MESSAGES FROM BEGINNING FROM SPECIFIC PARTITION
+```sh
+bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --partition 2 --topic animals --from-beginning
+```
+
+### START CONSOLE CONSUMER AND READ MESSAGES FROM SPECIFIC OFFSET FROM SPECIFIC PARTITION
+```sh
+bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --partition 2 --topic animals --offset 0
+```
+
+### START CONSOLE CONSUMER WITH SPECIFIC CONSUMER GROUP
+```sh
+bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic test --group test --from-beginning
+```
+
+### LIST CONSUMER GROUPS
+```sh
+bin/kafka-consumer-groups.sh --bootstrap-server localhost:9092 --list
+```
+
+### CONSUMER GROUP DETAILS
+```sh
+bin/kafka-consumer-groups.sh --bootstrap-server localhost:9092 --group test --describe
 ```
