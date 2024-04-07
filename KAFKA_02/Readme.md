@@ -117,3 +117,57 @@ bin/kafka-consumer-groups.sh --bootstrap-server localhost:9092 --list
 ```sh
 bin/kafka-consumer-groups.sh --bootstrap-server localhost:9092 --group test --describe
 ```
+
+## MULTIPLE BROOKERS
+
+### START ZOOKEEPER
+```sh
+bin/zookeeper-server-start.sh config/zookeeper.properties
+```
+
+### START KAFKA BROKER
+```sh
+bin/kafka-server-start.sh config/server0.properties
+bin/kafka-server-start.sh config/server1.properties
+bin/kafka-server-start.sh config/server2.properties
+```
+
+### GET INFORMATION FROM ZOOKEEPER ABOUT ACTIVE BROKER IDS
+```sh
+bin/zookeeper-shell.sh localhost:2181 ls /brokers/ids
+```
+
+### GET INFORMATION FROM ZOOKEEPER ABOUT SPECIFIC BROKER BY ID
+```sh
+bin/zookeeper-shell.sh localhost:2181 get /brokers/ids/0
+```
+
+### CREATE TOPIC
+```sh
+bin/kafka-topics.sh --bootstrap-server localhost:9092,localhost:9093,localhost:9094 --create --replication-factor 3 --partitions 5 --topic animals
+```
+
+### LIST TOPICS
+```sh
+bin/kafka-topics.sh --bootstrap-server localhost:9092,localhost:9093,localhost:9094 --list
+```
+
+### TOPIC DETAILS
+```sh
+bin/kafka-topics.sh --bootstrap-server localhost:9092,localhost:9093,localhost:9094 --describe --topic animals
+```
+
+### START CONSOLE PRODUCER
+```sh
+bin/kafka-console-producer.sh --broker-list localhost:9092,localhost:9093,localhost:9094 --topic animals
+```
+
+### START CONSOLE CONSUMER
+```sh
+bin/kafka-console-consumer.sh --bootstrap-server localhost:9092,localhost:9093,localhost:9094 --topic animals
+```
+
+### START CONSOLE CONSUMER AND READ MESSAGES FROM BEGINNING
+```sh
+bin/kafka-console-consumer.sh --bootstrap-server localhost:9092,localhost:9093,localhost:9094 --topic test-topic --from-beginning
+```
